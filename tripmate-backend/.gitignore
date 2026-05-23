@@ -1,0 +1,9 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.jar
+*.war
+*.class
+
+# Local env
+.env
+application-local.properties

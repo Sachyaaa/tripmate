@@ -1,0 +1,9 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Env files (keep .env.example, ignore actual secrets)
+.env
+.env.local
+.env.*.local
