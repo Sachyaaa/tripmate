@@ -129,25 +129,4 @@ tripmate/
 - **Frontend**: Vercel — auto-deploys from `tripmate-frontend/`
 
 
-Resume bullet points (copy-paste ready for your Projects section):
 
-
-TripMate — Group Trip Planner
-github.com/Sachyaaa/tripmate  |  Live: (https://tripmate-by-sachin.vercel.app)
-
-• Engineered end-to-end using Claude Code (Anthropic) — demonstrates agentic AI
-  development: directing an AI agent through architecture, code generation, debugging,
-  and cloud deployment via natural-language prompts
-• Full-stack: Spring Boot 3.2 (Java 17) REST API + React 18 SPA; JWT stateless auth,
-  role-based access, 7 JPA entities
-• Implemented greedy settlement algorithm (max/min-heap, integer arithmetic) to
-  minimize the number of transactions needed to settle group expenses
-• PDF trip report generation (iText 5); drag-and-drop itinerary reordering
-  (react-beautiful-dnd)
-• Containerized with multi-stage Docker; deployed on Render + Vercel + TiDB
-  Serverless — permanently live at zero cost
-Skills section additions:
-
-AI/Tools: Claude Code, Agentic AI Development, Prompt Engineering
-Backend: Spring Boot, Spring Security, JWT, JPA/Hibernate
-DevOps: Docker, Render, Vercel, Multi-stage Docker builds
