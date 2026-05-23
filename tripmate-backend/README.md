@@ -1,6 +1,6 @@
 # TripMate Backend
 
-Spring Boot 3.x REST API for the TripMate group trip planner.
+Spring Boot 3.x REST API for the TripMate group trip planner. See the [root README](../README.md) for full project context, tech stack, and deployment details.
 
 ## Prerequisites
 

@@ -1,6 +1,6 @@
 # TripMate Frontend
 
-React 18 + Vite SPA for the TripMate group trip planner.
+React 18 + Vite SPA for the TripMate group trip planner. See the [root README](../README.md) for full project context, tech stack, and deployment details.
 
 ## Prerequisites
 
