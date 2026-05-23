@@ -128,13 +128,12 @@ tripmate/
 - **Database**: TiDB Serverless (MySQL-compatible, free forever) — SSL required in JDBC URL
 - **Frontend**: Vercel — auto-deploys from `tripmate-frontend/`
 
-> Tip: Use [UptimeRobot](https://uptimerobot.com) to ping the backend every 10 minutes and prevent Render free-tier cold starts.
 
 Resume bullet points (copy-paste ready for your Projects section):
 
 
 TripMate — Group Trip Planner
-github.com/Sachyaaa/tripmate  |  Live: YOUR_VERCEL_URL
+github.com/Sachyaaa/tripmate  |  Live: (https://tripmate-by-sachin.vercel.app)
 
 • Engineered end-to-end using Claude Code (Anthropic) — demonstrates agentic AI
   development: directing an AI agent through architecture, code generation, debugging,
