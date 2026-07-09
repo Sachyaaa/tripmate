@@ -1,0 +1,19 @@
+meta {
+  name: Update Item
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/items/{{itemId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Check in at hotel (early)",
+    "time": "12:00",
+    "category": "HOTEL"
+  }
+}

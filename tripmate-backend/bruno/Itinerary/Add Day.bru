@@ -1,0 +1,25 @@
+meta {
+  name: Add Day
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/trips/{{tripId}}/days
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "dayNumber": 1,
+    "dayDate": "2026-08-01",
+    "title": "Arrival & beach"
+  }
+}
+
+script:post-response {
+  if (res.getStatus() === 201) {
+    bru.setEnvVar("dayId", res.getBody().id);
+  }
+}

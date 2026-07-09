@@ -1,0 +1,11 @@
+meta {
+  name: Get Balances
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/trips/{{tripId}}/balances
+  body: none
+  auth: inherit
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Mark Paid
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/api/settlements/mark-paid
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "fromUserId": "{{userId}}",
+    "toUserId": "<other-user-id>",
+    "tripId": "{{tripId}}"
+  }
+}
+
+docs {
+  Marks the debt from `fromUserId` to `toUserId` in this trip as paid.
+  Replace `<other-user-id>` with a real member id from Get Balances.
+}

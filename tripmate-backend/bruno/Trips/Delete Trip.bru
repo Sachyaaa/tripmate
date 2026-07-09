@@ -1,0 +1,11 @@
+meta {
+  name: Delete Trip
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{baseUrl}}/api/trips/{{tripId}}
+  body: none
+  auth: inherit
+}

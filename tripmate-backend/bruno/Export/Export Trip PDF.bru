@@ -1,0 +1,15 @@
+meta {
+  name: Export Trip PDF
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/trips/{{tripId}}/export/pdf
+  body: none
+  auth: inherit
+}
+
+docs {
+  Returns a PDF (application/pdf). In Bruno, use "Save Response" to write it to disk.
+}

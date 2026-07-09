@@ -1,0 +1,39 @@
+meta {
+  name: Create Expense
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/trips/{{tripId}}/expenses
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Dinner",
+    "amount": 1200.00,
+    "currency": "INR",
+    "paidByUserId": "{{userId}}",
+    "category": "FOOD",
+    "splitType": "EQUAL",
+    "date": "2026-08-01"
+  }
+}
+
+script:post-response {
+  if (res.getStatus() === 201) {
+    bru.setEnvVar("expenseId", res.getBody().id);
+  }
+}
+
+docs {
+  splitType EQUAL divides equally among all trip members.
+  For CUSTOM, provide a `splits` array that sums to `amount`, e.g.:
+  "splitType": "CUSTOM",
+  "splits": [
+    { "userId": "{{userId}}", "amount": 800.00 },
+    { "userId": "<other-user-id>", "amount": 400.00 }
+  ]
+}

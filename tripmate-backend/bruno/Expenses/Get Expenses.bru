@@ -1,0 +1,11 @@
+meta {
+  name: Get Expenses
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/trips/{{tripId}}/expenses
+  body: none
+  auth: inherit
+}

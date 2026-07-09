@@ -1,0 +1,11 @@
+meta {
+  name: Trip Preview (public)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/trips/join/{{inviteToken}}
+  body: none
+  auth: none
+}

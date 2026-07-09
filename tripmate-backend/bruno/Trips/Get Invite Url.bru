@@ -1,0 +1,11 @@
+meta {
+  name: Get Invite Url
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/trips/{{tripId}}/invite
+  body: none
+  auth: inherit
+}

@@ -1,0 +1,16 @@
+meta {
+  name: Join Trip
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/trips/join/{{inviteToken}}
+  body: none
+  auth: inherit
+}
+
+docs {
+  Joins the trip identified by the invite token as the currently logged-in user.
+  Tip: log in as a *different* user first, otherwise you're already a member.
+}

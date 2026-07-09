@@ -1,0 +1,22 @@
+meta {
+  name: Get Notifications
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/notifications
+  body: none
+  auth: inherit
+}
+
+script:post-response {
+  if (res.getStatus() === 200 && res.getBody().length > 0) {
+    bru.setEnvVar("notificationId", res.getBody()[0].id);
+  }
+}
+
+docs {
+  Returns notifications for the currently logged-in user, newest first.
+  Log in as a NON-payer member (e.g. Alice, if Bob paid) to see rows.
+}

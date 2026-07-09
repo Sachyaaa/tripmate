@@ -1,0 +1,16 @@
+meta {
+  name: Mark Notification Read
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/api/notifications/{{notificationId}}/read
+  body: none
+  auth: inherit
+}
+
+docs {
+  Marks the notification saved by "Get Notifications" as read.
+  You can only mark your OWN notifications read (403 otherwise).
+}

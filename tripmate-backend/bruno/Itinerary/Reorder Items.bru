@@ -1,0 +1,21 @@
+meta {
+  name: Reorder Items
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/api/days/{{dayId}}/reorder
+  body: json
+  auth: inherit
+}
+
+body:json {
+  [
+    { "id": "{{itemId}}", "position": 0 }
+  ]
+}
+
+docs {
+  Body is an array of { id, position } for items within the day.
+}

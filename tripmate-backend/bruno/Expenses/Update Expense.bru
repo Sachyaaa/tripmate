@@ -1,0 +1,19 @@
+meta {
+  name: Update Expense
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseUrl}}/api/expenses/{{expenseId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Dinner (updated)",
+    "amount": 1500.00,
+    "category": "FOOD"
+  }
+}

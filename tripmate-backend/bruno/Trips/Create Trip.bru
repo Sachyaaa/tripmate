@@ -1,0 +1,28 @@
+meta {
+  name: Create Trip
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/trips
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Goa 2026",
+    "description": "Beach trip with the crew",
+    "startDate": "2026-08-01",
+    "endDate": "2026-08-05",
+    "coverEmoji": "🏖️"
+  }
+}
+
+script:post-response {
+  if (res.getStatus() === 201) {
+    bru.setEnvVar("tripId", res.getBody().id);
+    bru.setEnvVar("inviteToken", res.getBody().inviteToken);
+  }
+}

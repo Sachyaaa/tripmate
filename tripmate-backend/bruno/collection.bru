@@ -1,0 +1,21 @@
+auth {
+  mode: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # TripMate API
+
+  Bearer auth is applied at the collection level (uses the `{{token}}` env var).
+  Public endpoints (register, login, trip preview) override this with `auth: none`.
+
+  ## Quick start
+  1. Select the **Local** environment (top-right).
+  2. Run **Auth > Register** (or **Login**) — this auto-saves `token` and `userId`.
+  3. Run **Trips > Create Trip** — auto-saves `tripId` and `inviteToken`.
+  4. Run **Expenses > Create Expense** — auto-saves `expenseId`.
+  5. Everything else reads those env vars automatically.
+}
