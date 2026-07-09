@@ -1,0 +1,73 @@
+# Local dev infrastructure for TripMate: MySQL + Kafka + web UIs.
+# Your Spring Boot app runs on the HOST (mvn spring-boot:run) and connects to these.
+#
+#   Start:     docker compose up -d
+#   Stop:      docker compose down
+#   Wipe data: docker compose down -v      (deletes the MySQL data too!)
+#   Logs:      docker compose logs -f mysql
+services:
+
+  # ---------- Database ----------
+  mysql:
+    image: mysql:8.0
+    container_name: tripmate-mysql
+    ports:
+      - "3306:3306"          # connect from host at localhost:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: tripmate_root
+      MYSQL_DATABASE: tripmate          # auto-creates the DB on first start
+      MYSQL_USER: tripmate
+      MYSQL_PASSWORD: tripmate_pass
+    volumes:
+      - mysql_data:/var/lib/mysql       # data survives container restarts
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-ptripmate_root"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ---------- Web UI for the database (replaces Workbench) ----------
+  adminer:
+    image: adminer:latest
+    container_name: tripmate-adminer
+    ports:
+      - "8081:8080"          # open http://localhost:8081
+    depends_on:
+      - mysql
+
+  # ---------- Kafka (KRaft mode, no ZooKeeper) ----------
+  kafka:
+    image: apache/kafka:3.7.1
+    container_name: tripmate-kafka
+    ports:
+      - "9092:9092"          # your Spring app connects here
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,HOST:PLAINTEXT,INTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: CONTROLLER://0.0.0.0:9093,HOST://0.0.0.0:9092,INTERNAL://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: HOST://localhost:9092,INTERNAL://kafka:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+  # ---------- Web UI for Kafka ----------
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: tripmate-kafka-ui
+    ports:
+      - "8090:8080"          # open http://localhost:8090
+    environment:
+      KAFKA_CLUSTERS_0_NAME: tripmate-local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      DYNAMIC_CONFIG_ENABLED: "true"
+    depends_on:
+      - kafka
+
+volumes:
+  mysql_data:
