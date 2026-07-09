@@ -1,5 +1,7 @@
 package com.tripmate.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripmate.dto.request.CreateExpenseRequest;
 import com.tripmate.dto.request.ExpenseSplitRequest;
 import com.tripmate.dto.request.MarkPaidRequest;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -34,7 +37,8 @@ public class ExpenseService {
     private final TripRepository tripRepository;
     private final TripMemberRepository memberRepository;
     private final UserRepository userRepository;
-    private final ExpenseEventProducer expenseEventProducer;;
+    private final ObjectMapper mapper;
+    private final OutboxEventRepository outboxEventRepository;
 
     public List<ExpenseResponse> getExpenses(UUID tripId, String email) {
         verifyMembership(tripId, email);
@@ -72,7 +76,19 @@ public class ExpenseService {
                 .paidByUserId(req.getPaidByUserId())
                 .build();
 
-        expenseEventProducer.publishExpenseCreated(event);
+        try {
+            String json = mapper.writeValueAsString(event);
+            OutboxEvent outboxEvent = OutboxEvent.builder()
+                    .topic(ExpenseEventProducer.TOPIC)
+                    .messageKey(tripId.toString())
+                    .payload(json)
+                    .published(false)
+                    .createdAt(LocalDateTime.now()).build();
+
+            outboxEventRepository.save(outboxEvent);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         return toExpenseResponse(expense, splits);
     }
