@@ -10,6 +10,8 @@ import com.tripmate.dto.response.ExpenseSplitResponse;
 import com.tripmate.dto.response.SettlementResponse;
 import com.tripmate.entity.*;
 import com.tripmate.entity.enums.SplitType;
+import com.tripmate.event.ExpenseCreatedEvent;
+import com.tripmate.event.ExpenseEventProducer;
 import com.tripmate.exception.BadRequestException;
 import com.tripmate.exception.ResourceNotFoundException;
 import com.tripmate.exception.TripAccessDeniedException;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -31,6 +34,7 @@ public class ExpenseService {
     private final TripRepository tripRepository;
     private final TripMemberRepository memberRepository;
     private final UserRepository userRepository;
+    private final ExpenseEventProducer expenseEventProducer;;
 
     public List<ExpenseResponse> getExpenses(UUID tripId, String email) {
         verifyMembership(tripId, email);
@@ -56,6 +60,20 @@ public class ExpenseService {
         expense = expenseRepository.save(expense);
 
         List<ExpenseSplit> splits = createSplits(expense, req.getSplitType(), req.getAmount(), req.getSplits(), tripId);
+        ExpenseCreatedEvent event = ExpenseCreatedEvent.builder()
+                .eventId(UUID.randomUUID())
+                .occurredAt(Instant.now())
+                .paidByName(paidBy.getDisplayName())
+                .tripId(tripId)
+                .expenseId(expense.getId())
+                .title(expense.getTitle())
+                .amount(expense.getAmount())
+                .currency(expense.getCurrency())
+                .paidByUserId(req.getPaidByUserId())
+                .build();
+
+        expenseEventProducer.publishExpenseCreated(event);
+
         return toExpenseResponse(expense, splits);
     }
 
